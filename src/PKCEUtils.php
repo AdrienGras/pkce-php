@@ -66,12 +66,12 @@ class PKCEUtils
      * @return array The code verifier and the code challenge.
      * @throws Exception if an appropriate source of randomness cannot be found.
      */
-    public static function generateKeyPair(): array {
+    public static function generateCodePair(string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256): array {
         $verifier = self::generateCodeVerifier();
 
         return [
             'code_verifier' => $verifier,
-            'code_challenge' => self::generateCodeChallenge($verifier),
+            'code_challenge' => self::generateCodeChallenge($verifier, $codeChallengeMethod),
         ];
     }
 

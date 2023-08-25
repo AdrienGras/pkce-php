@@ -44,16 +44,33 @@ class TestSuite extends TestCase
         $this->assertTrue(PKCEUtils::validate($codeVerifier, $possibleCodeChallenge, $codeChallengeMethod));
     }
 
-    public function testGenerateKeyPair()
+    public function testGenerateKeyPairPlain()
     {
-        $keyPair = PKCEUtils::generateKeyPair();
+        $codeChallengeMethod = PKCEUtils::CODE_CHALLENGE_METHOD_PLAIN;
+
+        $keyPair = PKCEUtils::generateCodePair($codeChallengeMethod);
 
         $this->assertIsArray($keyPair);
         $this->assertArrayHasKey('code_verifier', $keyPair);
         $this->assertArrayHasKey('code_challenge', $keyPair);
         $this->assertIsString($keyPair['code_verifier']);
         $this->assertIsString($keyPair['code_challenge']);
+        $this->assertTrue(PKCEUtils::validate($keyPair['code_verifier'], $keyPair['code_challenge'], $codeChallengeMethod));
     }
+
+    public function testGenerateKeyPairSHA256()
+    {
+        $keyPair = PKCEUtils::generateCodePair();
+
+        $this->assertIsArray($keyPair);
+        $this->assertArrayHasKey('code_verifier', $keyPair);
+        $this->assertArrayHasKey('code_challenge', $keyPair);
+        $this->assertIsString($keyPair['code_verifier']);
+        $this->assertIsString($keyPair['code_challenge']);
+        $this->assertTrue(PKCEUtils::validate($keyPair['code_verifier'], $keyPair['code_challenge']));
+    }
+
+
 
     public function testSupportedCodeChallengeMethods()
     {
