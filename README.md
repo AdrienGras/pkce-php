@@ -40,20 +40,22 @@ $verifier = PKCEUtils::generateCodeVerifier();
 // generate a code challenge from the code verifier
 $challenge = PKCEUtils::generateCodeChallenge($verifier);
 
-// alternatively, generate a pair of code verifier and code challenge
-$pair = PKCEUtils::generateKeyPair();
-$verifier = $pair['code_verifier'];
-$challenge = $pair['code_challenge'];
-// or with destrucuring
-[$verifier, $challenge] = PKCEUtils::generateKeyPair();
-
 // you can also use the plain text challenge method for testing purpose
 // WARNING: this method is not secure and should not be used in production
 $challenge = PKCEUtils::generateCodeChallenge($verifier, PKCEUtils::CODE_CHALLENGE_METHOD_PLAIN);
 
+// alternatively, generate a pair of code verifier and code challenge
+$pair = PKCEUtils::generateKeyPair();
+$verifier = $pair['code_verifier'];
+$challenge = $pair['code_challenge'];
+// or with destructuring
+[$verifier, $challenge] = PKCEUtils::generateKeyPair();
+
 // validate a code verifier with a code challenge
 $isValid = PKCEUtils::validate($verifier, $challenge);
 ```
+
+> **Note** You can also use the test case suite as a full example on how to use this utility. You can find it in the [tests](tests) folder.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
