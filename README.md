@@ -2,7 +2,6 @@
 
 ![GitHub](https://img.shields.io/github/license/AdrienGras/pkce-php)
 ![GitHub workflows](https://github.com/AdrienGras/pkce-php/actions/workflows/php.yml/badge.svg)
-![GitHub release (latest by SemVer including pre-releases)](https://img.shields.io/github/downloads-pre/AdrienGras/pkce-php/latest/total)
 
 A simple utility to use PKCE (Proof Key for Code Exchange) in PHP.
 
