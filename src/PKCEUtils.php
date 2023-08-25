@@ -76,6 +76,22 @@ class PKCEUtils
     }
 
     /**
+     * Verify a code challenge against a code verifier.
+     * @param string $codeVerifier The code verifier.
+     * @param string $codeChallenge The code challenge.
+     * @param string $codeChallengeMethod The code challenge method to use. Use one of the constants from this class.
+     * @return bool Whether the code challenge is valid.
+     */
+    public static function validate(
+        string $codeVerifier,
+        string $codeChallenge,
+        string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256
+    ): bool
+    {
+        return $codeChallenge === self::generateCodeChallenge($codeVerifier, $codeChallengeMethod);
+    }
+
+    /**
      * Get the supported code challenge methods.
      * @return string[] The supported code challenge methods.
      */
