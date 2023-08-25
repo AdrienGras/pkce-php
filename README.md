@@ -45,11 +45,11 @@ $challenge = PKCEUtils::generateCodeChallenge($verifier);
 $challenge = PKCEUtils::generateCodeChallenge($verifier, PKCEUtils::CODE_CHALLENGE_METHOD_PLAIN);
 
 // alternatively, generate a pair of code verifier and code challenge
-$pair = PKCEUtils::generateKeyPair();
+$pair = PKCEUtils::generateCodePair();
 $verifier = $pair['code_verifier'];
 $challenge = $pair['code_challenge'];
 // or with destructuring
-[$verifier, $challenge] = PKCEUtils::generateKeyPair();
+[$verifier, $challenge] = PKCEUtils::generateCodePair();
 
 // validate a code verifier with a code challenge
 $isValid = PKCEUtils::validate($verifier, $challenge);
