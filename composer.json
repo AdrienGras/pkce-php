@@ -2,6 +2,7 @@
   "name": "adriengras/pkce-php",
   "description": "A simple utility to use PKCE (Proof Key for Code Exchange) in PHP.",
   "type": "library",
+  "version": "1.0.4",
   "license": "MIT",
   "autoload": {
     "psr-4": {
