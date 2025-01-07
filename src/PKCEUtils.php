@@ -24,15 +24,31 @@ class PKCEUtils
      */
     public const CODE_CHALLENGE_METHOD_S256 = 'S256';
 
+    // 66 characters, differs from the urlsafe base64 charset               
+    private const PKCE_VERIFIER_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+
+
     /**
-     * Generate a code verifier.
-     * @see https://tools.ietf.org/html/rfc7636#section-4.1
+     * Generate a code verifier given a length. (default: 64)
+     * @param int $length The length of the code verifier. It must be between 43 and 128.
      * @return string The code verifier.
      * @throws Exception if an appropriate source of randomness cannot be found.
+     * @see https://tools.ietf.org/html/rfc7636#section-4.1
+     * @see https://github.com/AdrienGras/pkce-php/issues/8
      */
-    public static function generateCodeVerifier(): string
+    public static function generateCodeVerifier(int $length = 64): string
     {
-        return rtrim(strtr(base64_encode(random_bytes(64)), '+/', '-_'), '=');
+        $str = "";
+
+        if ($length < 43 || $length > 128) {
+            throw new \InvalidArgumentException('The length of the code verifier must be between 43 and 128. See https://tools.ietf.org/html/rfc7636#section-4.1');
+        }
+
+        for ($i = 0; $i < $length; $i++) {
+            $str .= self::PKCE_VERIFIER_CHARSET[random_int(0, strlen(self::PKCE_VERIFIER_CHARSET) - 1)];
+        }
+
+        return $str;
     }
 
     /**
@@ -40,25 +56,23 @@ class PKCEUtils
      * @param string $codeVerifier The code verifier to derive a code challenge from.
      * @param string $codeChallengeMethod The code challenge method to use. Use one of the constants from this class.
      * @return string The code challenge.
+     * @see https://github.com/AdrienGras/pkce-php/issues/8
      */
     public static function generateCodeChallenge(
         string $codeVerifier,
         string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256
-    ): string
-    {
+    ): string {
         if (false === in_array($codeChallengeMethod, self::supportedCodeChallengeMethods())) {
             throw new \InvalidArgumentException(sprintf('Code challenge method "%s" is not supported.', $codeChallengeMethod));
         }
 
         if (self::CODE_CHALLENGE_METHOD_PLAIN === $codeChallengeMethod) {
+            // quick exit, since there is no transformation
             return $codeVerifier;
         }
 
-        if (self::CODE_CHALLENGE_METHOD_S256 === $codeChallengeMethod) {
-            $codeChallengeMethod = 'sha256';
-        }
-
-        return rtrim(strtr(base64_encode(hash($codeChallengeMethod, $codeVerifier, true)), '+/', '-_'), '=');
+        $hash = hash('sha256', $codeVerifier, true);
+        return sodium_bin2base64($hash, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING);
     }
 
     /**
@@ -66,7 +80,8 @@ class PKCEUtils
      * @return array The code verifier and the code challenge.
      * @throws Exception if an appropriate source of randomness cannot be found.
      */
-    public static function generateCodePair(string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256): array {
+    public static function generateCodePair(string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256): array
+    {
         $verifier = self::generateCodeVerifier();
 
         return [
@@ -86,9 +101,8 @@ class PKCEUtils
         string $codeVerifier,
         string $codeChallenge,
         string $codeChallengeMethod = self::CODE_CHALLENGE_METHOD_S256
-    ): bool
-    {
-        return $codeChallenge === self::generateCodeChallenge($codeVerifier, $codeChallengeMethod);
+    ): bool {
+        return hash_equals($codeChallenge, self::generateCodeChallenge($codeVerifier, $codeChallengeMethod));
     }
 
     /**
@@ -102,5 +116,4 @@ class PKCEUtils
             self::CODE_CHALLENGE_METHOD_S256,
         ];
     }
-
 }

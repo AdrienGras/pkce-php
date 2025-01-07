@@ -1,29 +1,30 @@
 {
-    "name": "adriengras/pkce-php",
-    "description": "A simple utility to use PKCE (Proof Key for Code Exchange) in PHP.",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "AdrienGras\\PKCE\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AdrienGras\\PKCE\\Tests\\": "tests/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Adrien Gras",
-            "email": "agr@owlnext.fr"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=7.4"
-    },
-    "require-dev": {
-        "symfony/test-pack": "^1.1"
+  "name": "adriengras/pkce-php",
+  "description": "A simple utility to use PKCE (Proof Key for Code Exchange) in PHP.",
+  "type": "library",
+  "version": "1.0.4",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "AdrienGras\\PKCE\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AdrienGras\\PKCE\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Adrien Gras",
+      "email": "agr@owlnext.fr"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "symfony/test-pack": "^1.1.0"
+  }
 }
