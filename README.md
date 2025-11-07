@@ -12,6 +12,7 @@ This little utility is intended to help people using Oauth2 with PKCE in PHP. It
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Contributors](#contributors)
 - [License](#license)
 
 ## Features
@@ -61,6 +62,10 @@ $isValid = PKCEUtils::validate($verifier, $challenge);
 ```
 
 > **Note** You can also use the test case suite as a full example on how to use this utility. You can find it in the [tests](tests) folder.
+
+## Contributors
+
+- [Farkie](https://github.com/Farkie)
 
 ## License
 
