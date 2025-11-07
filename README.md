@@ -35,7 +35,7 @@ composer require adriengras/pkce-php
 
 ```php
 // import with composer autoloader
-use AdrienGras\PKCE\PKCE;
+use AdrienGras\PKCE\PKCEUtils;
 
 // ...
 
